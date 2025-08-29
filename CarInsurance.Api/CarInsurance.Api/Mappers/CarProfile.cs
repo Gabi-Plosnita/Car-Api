@@ -12,8 +12,5 @@ public class CarProfile : Profile
 			.ForCtorParam("OwnerId", opt => opt.MapFrom(src => src.Owner.Id))
 			.ForCtorParam("OwnerName", opt => opt.MapFrom(src => src.Owner.Name))
 			.ForCtorParam("OwnerEmail", opt => opt.MapFrom(src => src.Owner.Email));
-
-		CreateMap<InsuranceClaimRequestDto, InsuranceClaim>();
-		CreateMap<InsuranceClaim, InsuranceClaimResponseDto>();
 	}
 }
