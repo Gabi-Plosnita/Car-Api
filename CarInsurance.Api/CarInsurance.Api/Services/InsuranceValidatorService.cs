@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CarInsurance.Api.Services;
 
-public class PolicyValidatorService(AppDbContext _db) : IPolicyValidatorService
+public class InsuranceValidatorService(AppDbContext _db) : IInsuranceValidatorService
 {
 	public async Task<bool> IsCoveredOnDate(long carId, DateOnly date)
 	{
