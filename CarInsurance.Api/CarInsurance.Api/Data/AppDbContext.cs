@@ -11,11 +11,18 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Car>()
-            .HasIndex(c => c.Vin)
-            .IsUnique(false); // TODO: set true and handle conflicts
+		modelBuilder.Entity<Car>(e =>
+		{
+			e.Property(c => c.Vin)
+				.IsRequired()
+				.HasMaxLength(17)
+				.HasConversion(v => v.ToUpperInvariant().Trim(), v => v)
+				.UseCollation("NOCASE");
 
-        modelBuilder.Entity<InsurancePolicy>()
+			e.HasIndex(c => c.Vin).IsUnique();
+		});
+
+		modelBuilder.Entity<InsurancePolicy>()
             .Property(p => p.StartDate)
             .IsRequired();
 
