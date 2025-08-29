@@ -18,8 +18,8 @@ public class ClaimService(AppDbContext _db,
 
 	public async Task<InsuranceClaimResponseDto> CreateAsync(long carId, InsuranceClaimRequestDto dto)
 	{
-		await _carValidator.EnsureCarExists(carId);
-		await _insuranceValidator.EnsureIsCoveredOnDate(carId, dto.ClaimDate);
+		await _carValidator.EnsureCarExistsAsync(carId);
+		await _insuranceValidator.EnsureIsCoveredOnDateAsync(carId, dto.ClaimDate);
 
 		var entity = _mapper.Map<InsuranceClaim>(dto);
 		entity.CarId = carId;

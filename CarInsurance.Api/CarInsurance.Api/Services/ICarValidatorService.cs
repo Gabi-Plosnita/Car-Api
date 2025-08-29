@@ -2,7 +2,7 @@
 
 public interface ICarValidatorService
 {
-	Task<bool> ValidateCarExistance(long carId);
+	Task<bool> ValidateCarExistanceAsync(long carId);
 
-	Task EnsureCarExists(long carId);
+	Task EnsureCarExistsAsync(long carId);
 }

@@ -6,7 +6,7 @@ namespace CarInsurance.Api.Services;
 
 public class InsuranceValidatorService(AppDbContext _db) : IInsuranceValidatorService
 {
-	public async Task<bool> IsCoveredOnDate(long carId, DateOnly date)
+	public async Task<bool> IsCoveredOnDateAsync(long carId, DateOnly date)
 	{
 		return await _db.Policies.AnyAsync(p =>
 			p.CarId == carId &&
@@ -15,9 +15,9 @@ public class InsuranceValidatorService(AppDbContext _db) : IInsuranceValidatorSe
 		);
 	}
 
-	public async Task EnsureIsCoveredOnDate(long carId, DateOnly date)
+	public async Task EnsureIsCoveredOnDateAsync(long carId, DateOnly date)
 	{
-		if(!await IsCoveredOnDate(carId, date))
+		if(!await IsCoveredOnDateAsync(carId, date))
 			throw new DateNotCoveredException($"The date {date:yyyy-MM-dd} is not within the allowed range.");
 	}
 }

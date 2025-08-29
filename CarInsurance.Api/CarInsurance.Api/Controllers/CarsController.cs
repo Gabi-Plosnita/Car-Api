@@ -25,22 +25,20 @@ public class CarsController(ICarService _carService,
 	[HttpPost("{carId:long}/claims")]
 	public async Task<ActionResult<InsuranceClaimResponseDto>> CreateClaimAsync([FromRoute] long carId, InsuranceClaimRequestDto dto)
 	{
-		var claim = await _claimService.CreateAsync(carId, dto);
+		var responseDto = await _claimService.CreateAsync(carId, dto);
 
 		return CreatedAtRoute(
 			"GetClaimById",
-			new { claimId = claim.Id },
-			claim
+			new { claimId = responseDto.Id },
+			responseDto
 		);
 	}
 
 	[HttpGet("claims/{claimId:long}", Name = "GetClaimById")]
 	public async Task<ActionResult<InsuranceClaimResponseDto>> GetClaimAsync([FromRoute] long claimId)
 	{
-		var claim = await _claimService.GetAsync(claimId);
-		if (claim == null) return NotFound();
-		return Ok(claim);
+		var responseDto = await _claimService.GetAsync(claimId);
+		if (responseDto == null) return NotFound();
+		return Ok(responseDto);
 	}
-
-
 }

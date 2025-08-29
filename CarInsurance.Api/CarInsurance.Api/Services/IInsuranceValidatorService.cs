@@ -2,7 +2,7 @@
 
 public interface IInsuranceValidatorService
 {
-	Task<bool> IsCoveredOnDate(long carId, DateOnly date);
+	Task<bool> IsCoveredOnDateAsync(long carId, DateOnly date);
 
-	Task EnsureIsCoveredOnDate(long carId, DateOnly date);
+	Task EnsureIsCoveredOnDateAsync(long carId, DateOnly date);
 }

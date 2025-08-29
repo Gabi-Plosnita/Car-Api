@@ -8,7 +8,7 @@ public class InsuranceService(AppDbContext _db,
 {
 	public async Task<bool> IsInsuranceValidAsync(long carId, DateOnly date)
 	{
-		await _carValidator.EnsureCarExists(carId);
-		return await _insuranceValidator.IsCoveredOnDate(carId, date);
+		await _carValidator.EnsureCarExistsAsync(carId);
+		return await _insuranceValidator.IsCoveredOnDateAsync(carId, date);
 	}
 }
