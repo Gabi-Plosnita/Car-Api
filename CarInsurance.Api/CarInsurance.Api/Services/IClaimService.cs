@@ -4,5 +4,5 @@ namespace CarInsurance.Api.Services;
 
 public interface IClaimService
 {
-	Task<ClaimResponseDto> CreateAsync(long carId, ClaimRequestDto dto);
+	Task<InsuranceClaimResponseDto> CreateAsync(long carId, InsuranceClaimRequestDto dto);
 }

@@ -2,7 +2,7 @@
 
 namespace CarInsurance.Api.Dtos;
 
-public record ClaimRequestDto
+public record InsuranceClaimRequestDto
 {
 	[Required(ErrorMessage = "Claim date is required.")]
 	[DataType(DataType.Date, ErrorMessage = "Claim date must be a valid date.")]

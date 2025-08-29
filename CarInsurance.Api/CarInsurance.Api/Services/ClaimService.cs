@@ -7,7 +7,7 @@ namespace CarInsurance.Api.Services;
 
 public class ClaimService(AppDbContext _db, IMapper _mapper, ICarValidatorService _carValidator) : IClaimService
 {
-	public async Task<ClaimResponseDto> CreateAsync(long carId, ClaimRequestDto requestDto)
+	public async Task<InsuranceClaimResponseDto> CreateAsync(long carId, InsuranceClaimRequestDto requestDto)
 	{
 		await _carValidator.ValidateCarExistance(carId);
 
@@ -17,6 +17,6 @@ public class ClaimService(AppDbContext _db, IMapper _mapper, ICarValidatorServic
 		_db.InsuranceClaims.Add(entity);
 		await _db.SaveChangesAsync();
 
-		return _mapper.Map<ClaimResponseDto>(entity);
+		return _mapper.Map<InsuranceClaimResponseDto>(entity);
 	}
 }

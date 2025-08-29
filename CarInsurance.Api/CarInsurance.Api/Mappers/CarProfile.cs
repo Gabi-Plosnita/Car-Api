@@ -13,7 +13,7 @@ public class CarProfile : Profile
 			.ForCtorParam("OwnerName", opt => opt.MapFrom(src => src.Owner.Name))
 			.ForCtorParam("OwnerEmail", opt => opt.MapFrom(src => src.Owner.Email));
 
-		CreateMap<ClaimRequestDto, InsuranceClaim>();
-		CreateMap<InsuranceClaim, ClaimResponseDto>();
+		CreateMap<InsuranceClaimRequestDto, InsuranceClaim>();
+		CreateMap<InsuranceClaim, InsuranceClaimResponseDto>();
 	}
 }
