@@ -6,10 +6,10 @@ namespace CarInsurance.Api.Services;
 
 public class CarService(AppDbContext _db) : ICarService
 {
-    public async Task<List<CarDto>> ListCarsAsync()
+    public async Task<List<CarResponseDto>> ListCarsAsync()
     {
         return await _db.Cars.Include(c => c.Owner)
-            .Select(c => new CarDto(c.Id, c.Vin, c.Make, c.Model, c.YearOfManufacture,
+            .Select(c => new CarResponseDto(c.Id, c.Vin, c.Make, c.Model, c.YearOfManufacture,
                                     c.OwnerId, c.Owner.Name, c.Owner.Email))
             .ToListAsync();
     }

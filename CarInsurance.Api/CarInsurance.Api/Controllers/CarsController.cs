@@ -10,7 +10,7 @@ public class CarsController(ICarService _carService, IInsuranceService _insuranc
 {
 
     [HttpGet]
-    public async Task<ActionResult<List<CarDto>>> GetCars()
+    public async Task<ActionResult<List<CarResponseDto>>> GetCars()
         => Ok(await _carService.ListCarsAsync());
 
     [HttpGet("{carId:long}/insurance-valid")]
