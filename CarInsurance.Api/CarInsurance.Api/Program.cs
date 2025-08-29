@@ -12,7 +12,7 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 builder.Services.AddScoped<ICarService, CarService>();
 builder.Services.AddScoped<ICarValidatorService, CarValidatorService>();
 builder.Services.AddScoped<IInsuranceService, InsuranceService>();
-
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
