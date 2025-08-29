@@ -1,13 +1,17 @@
 ﻿using CarInsurance.Api.Data;
+using CarInsurance.Api.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarInsurance.Api.Services;
 
 public class CarValidatorService(AppDbContext _db) : ICarValidatorService
 {
-	public async Task ValidateCarExistance(long carId)
+	public async Task<bool> ValidateCarExistance(long carId)
+		=> await _db.Cars.AnyAsync(c => c.Id == carId);
+
+	public async Task EnsureCarExists(long carId)
 	{
-		var carExists = await _db.Cars.AnyAsync(c => c.Id == carId);
-		if (!carExists) throw new KeyNotFoundException($"Car {carId} not found");
+		if (!await ValidateCarExistance(carId))
+			throw new CarNotFoundException($"Car {carId} not found");
 	}
 }
