@@ -16,16 +16,31 @@ public class CarsController(ICarService _carService,
         => Ok(await _carService.ListCarsAsync());
 
     [HttpGet("{carId:long}/insurance-valid")]
-    public async Task<ActionResult<InsuranceValidityResponse>> IsInsuranceValidAsync([FromRoute] long carId, [FromQuery] string date)
+    public async Task<ActionResult<InsuranceValidityResponse>> IsInsuranceValidAsync([FromRoute] long carId, [FromQuery] DateRequestDto dto)
     {
-        if (!DateOnly.TryParse(date, out var parsed))
-            return BadRequest("Invalid date format. Use YYYY-MM-DD.");
-
-        var valid = await _insuranceService.IsInsuranceValidAsync(carId, parsed);
-        return Ok(new InsuranceValidityResponse(carId, parsed.ToString("yyyy-MM-dd"), valid));
+        var isValid = await _insuranceService.IsInsuranceValidAsync(carId, dto.Date);
+        return Ok(new InsuranceValidityResponse(carId, dto.Date.ToString("yyyy-MM-dd"), isValid));
     }
 
 	[HttpPost("{carId:long}/claims")]
-    public async Task<ActionResult<InsuranceClaimResponseDto>> CreateClaimAsync([FromRoute] long carId, InsuranceClaimRequestDto dto)
-        => await _claimService.CreateAsync(carId, dto);
+	public async Task<ActionResult<InsuranceClaimResponseDto>> CreateClaimAsync([FromRoute] long carId, InsuranceClaimRequestDto dto)
+	{
+		var claim = await _claimService.CreateAsync(carId, dto);
+
+		return CreatedAtRoute(
+			"GetClaimById",
+			new { claimId = claim.Id },
+			claim
+		);
+	}
+
+	[HttpGet("claims/{claimId:long}", Name = "GetClaimById")]
+	public async Task<ActionResult<InsuranceClaimResponseDto>> GetClaimAsync([FromRoute] long claimId)
+	{
+		var claim = await _claimService.GetAsync(claimId);
+		if (claim == null) return NotFound();
+		return Ok(claim);
+	}
+
+
 }
