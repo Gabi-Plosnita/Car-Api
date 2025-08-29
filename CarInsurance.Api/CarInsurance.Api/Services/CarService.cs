@@ -4,10 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CarInsurance.Api.Services;
 
-public class CarService(AppDbContext db)
+public class CarService(AppDbContext _db) : ICarService
 {
-    private readonly AppDbContext _db = db;
-
     public async Task<List<CarDto>> ListCarsAsync()
     {
         return await _db.Cars.Include(c => c.Owner)
@@ -15,21 +13,4 @@ public class CarService(AppDbContext db)
                                     c.OwnerId, c.Owner.Name, c.Owner.Email))
             .ToListAsync();
     }
-
-    public async Task<bool> IsInsuranceValidAsync(long carId, DateOnly date)
-    {
-        await ValidateCarExistance(carId);
-
-        return await _db.Policies.AnyAsync(p =>
-            p.CarId == carId &&
-            p.StartDate <= date &&
-            p.EndDate >= date
-        );
-    }
-
-    private async Task ValidateCarExistance(long carId)
-    {
-		var carExists = await _db.Cars.AnyAsync(c => c.Id == carId);
-		if (!carExists) throw new KeyNotFoundException($"Car {carId} not found");
-	}
 }
