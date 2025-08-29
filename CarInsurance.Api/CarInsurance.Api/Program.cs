@@ -9,7 +9,10 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
     opt.UseSqlite(builder.Configuration.GetConnectionString("Default"));
 });
 
-builder.Services.AddScoped<CarService>();
+builder.Services.AddScoped<ICarService, CarService>();
+builder.Services.AddScoped<ICarValidatorService, CarValidatorService>();
+builder.Services.AddScoped<IInsuranceService, InsuranceService>();
+
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
