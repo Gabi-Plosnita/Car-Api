@@ -5,16 +5,15 @@ using Microsoft.AspNetCore.Mvc;
 namespace CarInsurance.Api.Controllers;
 
 [ApiController]
-[Route("api")]
-public class CarsController(CarService service) : ControllerBase
+[Route("api/cars")]
+public class CarsController(ICarService _carService, IInsuranceService _insuranceService) : ControllerBase
 {
-    private readonly CarService _service = service;
 
-    [HttpGet("cars")]
+    [HttpGet]
     public async Task<ActionResult<List<CarDto>>> GetCars()
-        => Ok(await _service.ListCarsAsync());
+        => Ok(await _carService.ListCarsAsync());
 
-    [HttpGet("cars/{carId:long}/insurance-valid")]
+    [HttpGet("{carId:long}/insurance-valid")]
     public async Task<ActionResult<InsuranceValidityResponse>> IsInsuranceValid(long carId, [FromQuery] string date)
     {
         if (!DateOnly.TryParse(date, out var parsed))
@@ -22,7 +21,7 @@ public class CarsController(CarService service) : ControllerBase
 
         try
         {
-            var valid = await _service.IsInsuranceValidAsync(carId, parsed);
+            var valid = await _insuranceService.IsInsuranceValidAsync(carId, parsed);
             return Ok(new InsuranceValidityResponse(carId, parsed.ToString("yyyy-MM-dd"), valid));
         }
         catch (KeyNotFoundException)
