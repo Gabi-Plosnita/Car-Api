@@ -1,4 +1,5 @@
 using CarInsurance.Api.Data;
+using CarInsurance.Api.Middleware;
 using CarInsurance.Api.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,6 +37,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 app.MapControllers();
