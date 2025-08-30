@@ -1,6 +1,4 @@
-﻿using System.Runtime.Serialization;
-
-namespace CarInsurance.Api.Exceptions;
+﻿namespace CarInsurance.Api.Exceptions;
 
 public class DateNotCoveredException : Exception
 {
