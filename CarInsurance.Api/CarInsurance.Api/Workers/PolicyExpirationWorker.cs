@@ -13,7 +13,12 @@ public class PolicyExpirationWorker(ILogger<PolicyExpirationWorker> _logger,
 		{
 			var nowUtc = _clock.UtcNow;
 			var nowLocal = TimeZoneInfo.ConvertTime(nowUtc, _appTimeZone);
-			var nextLocal = new DateTime(nowLocal.Year, nowLocal.Month, nowLocal.Day, 0, 30, 0);
+			/*This task run each day at 00:30. If you want to test the loging functionality on the database
+			  you can simply adjust the hour and minute and the logic will be called and expired policies will
+			  be logged.
+			 */
+			
+			var nextLocal = new DateTime(nowLocal.Year, nowLocal.Month, nowLocal.Day, 0, 30, 0); 
 			if (nowLocal >= nextLocal) nextLocal = nextLocal.AddDays(1);
 			var nextUtc = TimeZoneInfo.ConvertTimeToUtc(nextLocal, _appTimeZone);
 			var delay = nextUtc - nowUtc;

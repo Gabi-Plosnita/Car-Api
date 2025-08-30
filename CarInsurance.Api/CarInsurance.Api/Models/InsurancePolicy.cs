@@ -10,5 +10,5 @@ public class InsurancePolicy
     public string? Provider { get; set; }
     public DateOnly StartDate { get; set; }
     public DateOnly EndDate { get; set; }
-	public DateTime? ExpirationLoggedAtUtc { get; set; }
+	public DateTime? ExpirationLoggedAtUtc { get; set; }    // This prevents us from logging the same expired policy more than once
 }
