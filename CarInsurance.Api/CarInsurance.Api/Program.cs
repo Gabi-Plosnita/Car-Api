@@ -1,3 +1,4 @@
+using CarInsurance.Api.Converters;
 using CarInsurance.Api.Data;
 using CarInsurance.Api.Jobs;
 using CarInsurance.Api.Middleware;
@@ -28,7 +29,13 @@ builder.Services.AddHostedService<PolicyExpirationWorker>();
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
-builder.Services.AddControllers();
+builder.Services
+	.AddControllers()
+	.AddJsonOptions(o =>
+	{
+		o.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter());
+	});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
