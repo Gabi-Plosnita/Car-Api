@@ -9,17 +9,17 @@ public interface IPolicyExpirationProcessor
 }
 
 public sealed class PolicyExpirationProcessor(AppDbContext _db,
-											ILogger<PolicyExpirationProcessor> _logger,
-											IClock _clock,
-											TimeZoneInfo _appTimeZone) : IPolicyExpirationProcessor
+											  ILogger<PolicyExpirationProcessor> _logger,
+											  IClock _clock,
+											  TimeZoneInfo _appTimeZone) : IPolicyExpirationProcessor
 {
 	public async Task<int> ProcessAsync(CancellationToken ct = default)
 	{
 		var nowLocal = TimeZoneInfo.ConvertTime(_clock.UtcNow, _appTimeZone);
-		var yesterdayLocal = DateOnly.FromDateTime(nowLocal.Date.AddDays(-1));
+		var todayLocal = DateOnly.FromDateTime(nowLocal.Date);
 
 		var toProcess = await _db.Policies
-			.Where(p => p.EndDate == yesterdayLocal && p.ExpirationLoggedAtUtc == null)
+			.Where(p => p.EndDate < todayLocal && p.ExpirationLoggedAtUtc == null)
 			.Select(p => new { p.Id, p.CarId, p.Provider, p.EndDate })
 			.ToListAsync(ct);
 
@@ -42,3 +42,4 @@ public sealed class PolicyExpirationProcessor(AppDbContext _db,
 		return affected;
 	}
 }
+
