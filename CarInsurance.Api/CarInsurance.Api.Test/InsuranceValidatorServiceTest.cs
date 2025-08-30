@@ -25,7 +25,7 @@ public class InsuranceValidatorServiceTests : TestBase
 	[DataRow("2025-6-25", true)]   // inside period
 	[DataRow("2024-12-31", false)]  // before period
 	[DataRow("2026-1-1", false)]  // after period
-	public async Task IsCoveredOnDateAsync_ReturnsExpected_WhenSingleFullYearPolicy(string dateIso, bool expected)
+	public async Task IsCoveredOnDateAsync_ReturnsExpected_ForDifferentScenarios(string dateIso, bool expected)
 	{
 		await SeedHelper.AddCarAsync(Db, carId: 1);
 		await SeedHelper.AddPolicyAsync(Db, policyId: 10, carId: 1, start: new DateOnly(2025, 1, 1), end: new DateOnly(2025, 12, 31));
