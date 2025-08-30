@@ -10,5 +10,6 @@ public class InsuranceClaimProfile : Profile
 	{
 		CreateMap<InsuranceClaimRequestDto, InsuranceClaim>();
 		CreateMap<InsuranceClaim, InsuranceClaimResponseDto>();
+		CreateMap<InsuranceClaim, ClaimEventDto>();
 	}
 }
