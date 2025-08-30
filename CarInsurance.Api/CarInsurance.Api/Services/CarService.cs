@@ -20,6 +20,7 @@ public class CarService(AppDbContext _db, IMapper _mapper) : ICarService
 	{
 		var car = await _db.Cars
 			.AsNoTracking()
+			.Include(c => c.Owner)
 			.Include(c => c.Policies)
 			.Include(c => c.InsuranceClaims)
 			.FirstOrDefaultAsync(c => c.Id == carId);

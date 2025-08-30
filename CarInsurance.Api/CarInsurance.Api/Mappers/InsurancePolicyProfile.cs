@@ -8,6 +8,7 @@ public class InsurancePolicyProfile : Profile
 {
 	public InsurancePolicyProfile()
 	{
-		CreateMap<InsurancePolicy, PolicyEventDto>();
+		CreateMap<InsurancePolicy, PolicyEventDto>()
+			.ForMember(d => d.PolicyId, o => o.MapFrom(s => s.Id));
 	}
 }

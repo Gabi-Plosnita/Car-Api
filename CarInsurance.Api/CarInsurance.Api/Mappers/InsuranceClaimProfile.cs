@@ -10,6 +10,7 @@ public class InsuranceClaimProfile : Profile
 	{
 		CreateMap<InsuranceClaimRequestDto, InsuranceClaim>();
 		CreateMap<InsuranceClaim, InsuranceClaimResponseDto>();
-		CreateMap<InsuranceClaim, ClaimEventDto>();
+		CreateMap<InsuranceClaim, ClaimEventDto>()
+			.ForMember(d => d.ClaimId, o => o.MapFrom(s => s.Id));
 	}
 }

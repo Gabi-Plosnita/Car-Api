@@ -13,8 +13,11 @@ public class CarProfile : Profile
 			.ForCtorParam("OwnerName", opt => opt.MapFrom(src => src.Owner.Name))
 			.ForCtorParam("OwnerEmail", opt => opt.MapFrom(src => src.Owner.Email));
 
-		CreateMap<Car, CarHistoryResponseDto>();
-			
+		CreateMap<Car, CarHistoryResponseDto>()
+			.ForMember(d => d.CarId, o => o.MapFrom(s => s.Id))
+			.ForMember(d => d.OwnerName, o => o.MapFrom(s => s.Owner.Name))
+			.ForMember(d => d.Events, o => o.Ignore());
+
 		CreateMap<InsurancePolicy, CarHistoryEventDto>()
 			.ForMember(d => d.Policy, opt => opt.MapFrom(s => s))
 			.ForMember(d => d.Claim, opt => opt.Ignore());
