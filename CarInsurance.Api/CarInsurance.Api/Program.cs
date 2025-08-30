@@ -3,10 +3,11 @@ using CarInsurance.Api.Jobs;
 using CarInsurance.Api.Middleware;
 using CarInsurance.Api.Services;
 using Microsoft.EntityFrameworkCore;
+using TimeZoneConverter;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var appTz = TimeZoneInfo.FindSystemTimeZoneById("Europe/Bucharest");
+var appTz = TZConvert.GetTimeZoneInfo("Europe/Bucharest");
 builder.Services.AddSingleton(appTz);
 
 builder.Services.AddDbContext<AppDbContext>(opt =>
