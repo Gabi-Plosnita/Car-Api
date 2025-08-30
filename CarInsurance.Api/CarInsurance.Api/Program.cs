@@ -1,9 +1,13 @@
 using CarInsurance.Api.Data;
+using CarInsurance.Api.Jobs;
 using CarInsurance.Api.Middleware;
 using CarInsurance.Api.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var appTz = TimeZoneInfo.FindSystemTimeZoneById("Europe/Bucharest");
+builder.Services.AddSingleton(appTz);
 
 builder.Services.AddDbContext<AppDbContext>(opt =>
 {
@@ -15,6 +19,10 @@ builder.Services.AddScoped<ICarValidatorService, CarValidatorService>();
 builder.Services.AddScoped<IInsuranceService, InsuranceService>();
 builder.Services.AddScoped<IInsuranceValidatorService, InsuranceValidatorService>();
 builder.Services.AddScoped<IClaimService, ClaimService>();
+
+builder.Services.AddSingleton<IClock, SystemClock>();
+builder.Services.AddScoped<IPolicyExpirationProcessor, PolicyExpirationProcessor>();
+builder.Services.AddHostedService<PolicyExpirationWorker>();
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
