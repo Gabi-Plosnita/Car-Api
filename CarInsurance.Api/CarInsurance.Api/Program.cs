@@ -22,6 +22,7 @@ builder.Services.AddScoped<IInsuranceValidatorService, InsuranceValidatorService
 builder.Services.AddScoped<IClaimService, ClaimService>();
 
 builder.Services.AddSingleton<IClock, SystemClock>();
+builder.Services.AddSingleton<TimeProvider>(TimeProvider.System);
 builder.Services.AddScoped<IPolicyExpirationProcessor, PolicyExpirationProcessor>();
 builder.Services.AddHostedService<PolicyExpirationWorker>();
 
