@@ -27,19 +27,18 @@ public class CarService(AppDbContext _db, IMapper _mapper) : ICarService
 
 		if (car == null) return null;
 
-		var dto = _mapper.Map<CarHistoryResponseDto>(car);
+		var carHistoryDto = _mapper.Map<CarHistoryResponseDto>(car);
 
-		dto = dto with
+		carHistoryDto = carHistoryDto with
 		{
 			Events = car.Policies
-				.Select(p => _mapper.Map<CarHistoryEventDto>(p) with { })
-				.Concat(car.InsuranceClaims
-					.Select(cl => _mapper.Map<CarHistoryEventDto>(cl)))
+				.Select(p => _mapper.Map<CarHistoryEventDto>(p))
+				.Concat(car.InsuranceClaims.Select(cl => _mapper.Map<CarHistoryEventDto>(cl)))
 				.OrderBy(e => e.Policy?.StartDate ?? e.Claim!.ClaimDate)
 				.ThenBy(e => e.Claim != null) 
 				.ToList()
 		};
 
-		return dto;
+		return carHistoryDto;
 	}
 }
