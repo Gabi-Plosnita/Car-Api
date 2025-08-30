@@ -42,4 +42,3 @@ public sealed class PolicyExpirationProcessor(AppDbContext _db,
 		return affected;
 	}
 }
-
