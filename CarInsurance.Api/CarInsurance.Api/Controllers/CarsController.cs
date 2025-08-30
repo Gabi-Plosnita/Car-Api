@@ -11,24 +11,33 @@ public class CarsController(ICarService _carService,
                             IClaimService _claimService) : ControllerBase
 {
     [HttpGet]
+	[ProducesResponseType(typeof(List<CarResponseDto>), StatusCodes.Status200OK)]
     public async Task<ActionResult<List<CarResponseDto>>> GetCarsAsync()
         => Ok(await _carService.ListCarsAsync());
 
     [HttpGet("{carId:long}/insurance-valid")]
-    public async Task<ActionResult<InsuranceValidityResponse>> IsInsuranceValidAsync([FromRoute] long carId, [FromQuery] DateRequestDto dto)
+	[ProducesResponseType(typeof(InsuranceValidityResponse), StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public async Task<ActionResult<InsuranceValidityResponse>> IsInsuranceValidAsync([FromRoute] long carId, [FromQuery] DateRequestDto dto)
     {
         var isValid = await _insuranceService.IsInsuranceValidAsync(carId, dto.Date);
         return Ok(new InsuranceValidityResponse(carId, dto.Date.ToString("yyyy-MM-dd"), isValid));
     }
 
 	[HttpPost("{carId:long}/claims")]
-	public async Task<ActionResult<InsuranceClaimResponseDto>> CreateClaimAsync([FromRoute] long carId, InsuranceClaimRequestDto dto)
+	[ProducesResponseType(typeof(InsuranceClaimResponseDto), StatusCodes.Status201Created)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public async Task<ActionResult<InsuranceClaimResponseDto>> CreateClaimAsync([FromRoute] long carId, [FromBody] InsuranceClaimRequestDto dto)
 	{
 		var responseDto = await _claimService.CreateAsync(carId, dto);
 		return CreatedAtRoute("GetClaimById", new { claimId = responseDto.Id }, responseDto);
 	}
 
 	[HttpGet("claims/{claimId:long}", Name = "GetClaimById")]
+	[ProducesResponseType(typeof(InsuranceClaimResponseDto), StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<InsuranceClaimResponseDto>> GetClaimAsync([FromRoute] long claimId)
 	{
 		var responseDto = await _claimService.GetAsync(claimId);
@@ -37,6 +46,8 @@ public class CarsController(ICarService _carService,
 	}
 
 	[HttpGet("{carId:long}/history")]
+	[ProducesResponseType(typeof(CarHistoryResponseDto), StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<CarHistoryResponseDto>> GetHistoryAsync([FromRoute] long carId)
 	{
 		var history = await _carService.GetHistoryAsync(carId);
