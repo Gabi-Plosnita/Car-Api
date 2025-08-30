@@ -2,7 +2,7 @@
 
 namespace CarInsurance.Api.Jobs;
 
-public sealed class PolicyExpirationWorker(ILogger<PolicyExpirationWorker> _logger,
+public class PolicyExpirationWorker(ILogger<PolicyExpirationWorker> _logger,
 										   IServiceScopeFactory _scopeFactory,
 										   IClock _clock,
 										   TimeZoneInfo _appTimeZone) : BackgroundService

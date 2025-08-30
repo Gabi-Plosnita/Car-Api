@@ -8,10 +8,10 @@ public interface IPolicyExpirationProcessor
 	Task<int> ProcessAsync(CancellationToken ct = default);
 }
 
-public sealed class PolicyExpirationProcessor(AppDbContext _db,
-											  ILogger<PolicyExpirationProcessor> _logger,
-											  IClock _clock,
-											  TimeZoneInfo _appTimeZone) : IPolicyExpirationProcessor
+public class PolicyExpirationProcessor(AppDbContext _db,
+									   ILogger<PolicyExpirationProcessor> _logger,
+									   IClock _clock,
+									   TimeZoneInfo _appTimeZone) : IPolicyExpirationProcessor
 {
 	public async Task<int> ProcessAsync(CancellationToken ct = default)
 	{

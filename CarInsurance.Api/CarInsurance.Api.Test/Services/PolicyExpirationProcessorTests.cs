@@ -8,7 +8,7 @@ using Moq;
 namespace CarInsurance.Api.Test;
 
 [TestClass]
-public sealed class PolicyExpirationProcessorTests : TestBase
+public class PolicyExpirationProcessorTests : TestBase
 {
 	private static PolicyExpirationProcessor CreateSut(AppDbContext db, IClock clock, TimeZoneInfo tz)
 		=> new(db, Mock.Of<ILogger<PolicyExpirationProcessor>>(), clock, tz);
