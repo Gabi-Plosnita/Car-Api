@@ -41,4 +41,13 @@ public class CarsController(ICarService _carService,
 		if (responseDto == null) return NotFound();
 		return Ok(responseDto);
 	}
+
+	[HttpGet("{carId:long}/history")]
+	public async Task<ActionResult<CarHistoryResponseDto>> GetHistoryAsync([FromRoute] long carId)
+	{
+		var history = await _carService.GetHistoryAsync(carId);
+		if (history == null) return NotFound();
+		return Ok(history);
+	}
+
 }
