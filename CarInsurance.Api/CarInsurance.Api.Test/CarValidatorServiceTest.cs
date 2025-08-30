@@ -7,13 +7,20 @@ namespace CarInsurance.Api.Test;
 [TestClass]
 public class CarValidatorServiceTests : TestBase
 {
+	private CarValidatorService _service = default!;
+
+	[TestInitialize]
+	public void Init()
+	{
+		_service = new CarValidatorService(Db);
+	}
+
 	[TestMethod]
 	public async Task ValidateCarExistanceAsync_ReturnsTrue_WhenCarExists()
 	{
 		await SeedHelper.AddCarAsync(Db, 1);
-		var service = new CarValidatorService(Db);
 
-		var result = await service.ValidateCarExistanceAsync(1);
+		var result = await _service.ValidateCarExistanceAsync(1);
 
 		result.Should().BeTrue();
 	}
@@ -21,9 +28,7 @@ public class CarValidatorServiceTests : TestBase
 	[TestMethod]
 	public async Task ValidateCarExistanceAsync_ReturnsFalse_WhenCarDoesNotExists()
 	{
-		var service = new CarValidatorService(Db);
-
-		var result = await service.ValidateCarExistanceAsync(1);
+		var result = await _service.ValidateCarExistanceAsync(1);
 
 		result.Should().BeFalse();
 	}
@@ -32,9 +37,8 @@ public class CarValidatorServiceTests : TestBase
 	public async Task EnsureCarExistsAsync_DoesNotThrow_WhenCarExists()
 	{
 		await SeedHelper.AddCarAsync(Db, 1);
-		var service = new CarValidatorService(Db);
 
-		Func<Task> act = async () => await service.EnsureCarExistsAsync(1);
+		Func<Task> act = async () => await _service.EnsureCarExistsAsync(1);
 
 		await act.Should().NotThrowAsync();
 	}
@@ -42,9 +46,7 @@ public class CarValidatorServiceTests : TestBase
 	[TestMethod]
 	public async Task EnsureCarExistsAsync_Throws_WhenCarMissing()
 	{
-		var service = new CarValidatorService(Db);
-
-		Func<Task> act = async () => await service.EnsureCarExistsAsync(42);
+		Func<Task> act = async () => await _service.EnsureCarExistsAsync(42);
 
 		await act.Should()
 			.ThrowAsync<CarNotFoundException>()
