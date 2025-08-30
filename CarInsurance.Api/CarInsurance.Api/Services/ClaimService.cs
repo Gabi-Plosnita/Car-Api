@@ -7,7 +7,7 @@ namespace CarInsurance.Api.Services;
 
 public interface IClaimService
 {
-	Task<InsuranceClaimResponseDto> GetAsync(long claimId);
+	Task<InsuranceClaimResponseDto?> GetAsync(long claimId);
 	Task<InsuranceClaimResponseDto> CreateAsync(long carId, InsuranceClaimRequestDto dto);
 }
 
@@ -16,7 +16,7 @@ public class ClaimService(AppDbContext _db,
 						  ICarValidatorService _carValidator,
 						  IInsuranceValidatorService _insuranceValidator) : IClaimService
 {
-	public async Task<InsuranceClaimResponseDto> GetAsync(long claimId)
+	public async Task<InsuranceClaimResponseDto?> GetAsync(long claimId)
 	{
 		var entity = await _db.InsuranceClaims.FindAsync(claimId);
 		return _mapper.Map<InsuranceClaimResponseDto>(entity);
