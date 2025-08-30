@@ -5,7 +5,11 @@ namespace CarInsurance.Api.Test;
 
 public static class SeedHelper
 {
-	public static async Task AddCarAsync(AppDbContext db, long carId, long ownerId = 100, string ownerName = "Owner")
+	public static async Task AddCarAsync(
+		AppDbContext db, 
+		long carId, 
+		long ownerId = 100, 
+		string ownerName = "Owner")
 	{
 		db.Cars.Add(new Car
 		{
@@ -17,7 +21,13 @@ public static class SeedHelper
 		await db.SaveChangesAsync();
 	}
 
-	public static async Task AddPolicyAsync(AppDbContext db, long policyId, long carId, DateOnly start, DateOnly end, string? provider = null)
+	public static async Task AddPolicyAsync(
+		AppDbContext db, 
+		long policyId, 
+		long carId, 
+		DateOnly start, 
+		DateOnly end, 
+		string? provider = null)
 	{
 		db.Policies.Add(new InsurancePolicy
 		{
@@ -28,5 +38,27 @@ public static class SeedHelper
 			Provider = provider
 		});
 		await db.SaveChangesAsync();
+	}
+
+	public static async Task<InsuranceClaim> AddClaimAsync(
+		AppDbContext db,
+		long claimId,
+		long carId,
+		DateOnly? claimDate = null,
+		string description = "seeded claim",
+		decimal amount = 123.45m)
+	{
+		var entity = new InsuranceClaim
+		{
+			Id = claimId,
+			CarId = carId,
+			ClaimDate = claimDate ?? new DateOnly(2025, 8, 30),
+			Description = description,
+			Amount = amount
+		};
+
+		db.InsuranceClaims.Add(entity);
+		await db.SaveChangesAsync(); 
+		return entity;
 	}
 }
