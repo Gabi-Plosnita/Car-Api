@@ -2,7 +2,7 @@
 
 namespace CarInsurance.Api.Dtos;
 
-public class DateRequestDto
+public record DateRequestDto
 {
 	[Required]
 	[DataType(DataType.Date)]
