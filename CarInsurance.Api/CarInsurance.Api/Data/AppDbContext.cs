@@ -12,25 +12,25 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-		modelBuilder.Entity<Car>(e =>
-		{
-			e.Property(c => c.Vin)
-				.IsRequired()
-				.HasMaxLength(17)
-				.HasConversion(v => v.ToUpperInvariant().Trim(), v => v)
-				.UseCollation("NOCASE");
+        modelBuilder.Entity<Car>(e =>
+        {
+            e.Property(c => c.Vin)
+                .IsRequired()
+                .HasMaxLength(17)
+                .HasConversion(v => v.ToUpperInvariant().Trim(), v => v)
+                .UseCollation("NOCASE");
 
-			e.HasIndex(c => c.Vin).IsUnique();
-		});
+            e.HasIndex(c => c.Vin).IsUnique();
+        });
 
-		modelBuilder.Entity<InsurancePolicy>()
-            .Property(p => p.StartDate)
-            .IsRequired();
+        modelBuilder.Entity<InsurancePolicy>(e =>
+        {
+            e.Property(p => p.StartDate).IsRequired();
+            e.Property(p => p.EndDate).IsRequired();
 
-		modelBuilder.Entity<InsurancePolicy>()
-			.Property(p => p.EndDate)
-			.IsRequired();
-	}
+            e.HasIndex(p => new { p.ExpirationLoggedAtUtc, p.EndDate });
+        });
+    }
 }
 
 public static class SeedData
