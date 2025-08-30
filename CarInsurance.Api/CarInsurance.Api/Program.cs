@@ -38,8 +38,8 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-	//db.Database.EnsureCreated();  No longer needed since we just need to apply the migrations to be up to date with the database
-	db.Database.Migrate();
+	//db.Database.EnsureCreated();  No longer needed since we apply the migrations
+	db.Database.Migrate(); // This applies all the migrations so you are up to date with the database schema
 	SeedData.EnsureSeeded(db);
 }
 
