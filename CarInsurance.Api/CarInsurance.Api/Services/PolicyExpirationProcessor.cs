@@ -3,15 +3,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CarInsurance.Api.Services;
 
-public interface IPolicyExpirationService
+public interface IPolicyExpirationProcessor
 {
 	Task<int> ProcessAsync(CancellationToken ct = default);
 }
 
-public sealed class PolicyExpirationService(AppDbContext _db,
-											ILogger<PolicyExpirationService> _logger,
+public sealed class PolicyExpirationProcessor(AppDbContext _db,
+											ILogger<PolicyExpirationProcessor> _logger,
 											IClock _clock,
-											TimeZoneInfo _appTimeZone) : IPolicyExpirationService
+											TimeZoneInfo _appTimeZone) : IPolicyExpirationProcessor
 {
 	public async Task<int> ProcessAsync(CancellationToken ct = default)
 	{
