@@ -6,6 +6,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CarInsurance.Api.Services;
 
+public interface ICarService
+{
+	Task<List<CarResponseDto>> ListCarsAsync();
+	Task<CarHistoryResponseDto?> GetHistoryAsync(long carId);
+}
+
 public class CarService(AppDbContext _db, IMapper _mapper) : ICarService
 {
     public async Task<List<CarResponseDto>> ListCarsAsync()

@@ -4,6 +4,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CarInsurance.Api.Services;
 
+public interface IInsuranceValidatorService
+{
+	Task<bool> IsCoveredOnDateAsync(long carId, DateOnly date);
+	Task EnsureIsCoveredOnDateAsync(long carId, DateOnly date);
+}
+
 public class InsuranceValidatorService(AppDbContext _db) : IInsuranceValidatorService
 {
 	public async Task<bool> IsCoveredOnDateAsync(long carId, DateOnly date)

@@ -5,6 +5,12 @@ using CarInsurance.Api.Models;
 
 namespace CarInsurance.Api.Services;
 
+public interface IClaimService
+{
+	Task<InsuranceClaimResponseDto> GetAsync(long claimId);
+	Task<InsuranceClaimResponseDto> CreateAsync(long carId, InsuranceClaimRequestDto dto);
+}
+
 public class ClaimService(AppDbContext _db, 
 						  IMapper _mapper, 
 						  ICarValidatorService _carValidator,
