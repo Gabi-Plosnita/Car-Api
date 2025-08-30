@@ -10,7 +10,6 @@ public class CarsController(ICarService _carService,
                             IInsuranceService _insuranceService,
                             IClaimService _claimService) : ControllerBase
 {
-
     [HttpGet]
     public async Task<ActionResult<List<CarResponseDto>>> GetCarsAsync()
         => Ok(await _carService.ListCarsAsync());
@@ -26,12 +25,7 @@ public class CarsController(ICarService _carService,
 	public async Task<ActionResult<InsuranceClaimResponseDto>> CreateClaimAsync([FromRoute] long carId, InsuranceClaimRequestDto dto)
 	{
 		var responseDto = await _claimService.CreateAsync(carId, dto);
-
-		return CreatedAtRoute(
-			"GetClaimById",
-			new { claimId = responseDto.Id },
-			responseDto
-		);
+		return CreatedAtRoute("GetClaimById", new { claimId = responseDto.Id }, responseDto);
 	}
 
 	[HttpGet("claims/{claimId:long}", Name = "GetClaimById")]
@@ -49,5 +43,4 @@ public class CarsController(ICarService _carService,
 		if (history == null) return NotFound();
 		return Ok(history);
 	}
-
 }
